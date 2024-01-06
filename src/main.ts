@@ -30,8 +30,8 @@ export default class HotReloadPlugin extends Plugin {
   /**
    * Ported from 'main.js'
    */
-  async onload() {
-    app.workspace.onLayoutReady(async () => {
+  public async onload() {
+    this.app.workspace.onLayoutReady(async () => {
       this.pluginReloaders = {};
       await this.getPluginNames();
       this.registerEvent(this.app.vault.on('raw', this.requestScan));
@@ -118,7 +118,6 @@ export default class HotReloadPlugin extends Plugin {
   }
 
   public get watchNeeded(): boolean {
-    // @ts-ignore
     return window.process.platform !== 'darwin' && window.process.platform !== 'win32';
   }
 
@@ -162,20 +161,18 @@ export default class HotReloadPlugin extends Plugin {
    */
   async checkVersions() {
     const base = this.app.plugins.getPluginFolder();
-    this.pluginNames.forEach(async (id, dir) => {
-      for (const dir of Object.keys(this.pluginNames)) {
-        for (const file of ['manifest.json', 'main.js', 'styles.css', '.hotreload']) {
-          const path = `${base}/${dir}/${file}`;
-          const stat = await app.vault.adapter.stat(path);
-          if (stat) {
-            if (this.statCache.has(path) && stat.mtime !== this.statCache.get(path).mtime) {
-              this.onFileChange(path);
-            }
-            this.statCache.set(path, stat);
+    for (const dir of Object.keys(this.pluginNames)) {
+      for (const file of ['manifest.json', 'main.js', 'styles.css', '.hotreload']) {
+        const path = `${base}/${dir}/${file}`;
+        const stat = await app.vault.adapter.stat(path);
+        if (stat) {
+          if (this.statCache.has(path) && stat.mtime !== this.statCache.get(path).mtime) {
+            this.onFileChange(path);
           }
+          this.statCache.set(path, stat);
         }
       }
-    });
+    }
   }
 
   /**
@@ -190,8 +187,8 @@ export default class HotReloadPlugin extends Plugin {
       this.watch(manifest.dir);
       plugins[manifest.dir.split('/').pop()] = manifest.id;
       if (
-        (await this.app.vault.exists(manifest.dir + '/.git')) ||
-        (await this.app.vault.exists(manifest.dir + '/.hotreload'))
+        (await app.vault.exists(manifest.dir + '/.git')) ||
+        (await app.vault.exists(manifest.dir + '/.hotreload'))
       ) {
         enabled.add(manifest.id);
       }
@@ -279,7 +276,7 @@ export default class HotReloadPlugin extends Plugin {
   }
 }
 
-class HotReloadModal extends Modal {
+export class HotReloadModal extends Modal {
   constructor(app: App) {
     super(app);
   }
@@ -295,7 +292,7 @@ class HotReloadModal extends Modal {
   }
 }
 
-class HotReloadSettingTab extends PluginSettingTab {
+export class HotReloadSettingTab extends PluginSettingTab {
   plugin: HotReloadPlugin;
 
   constructor(app: App, plugin: HotReloadPlugin) {

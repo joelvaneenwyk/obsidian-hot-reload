@@ -12,6 +12,6 @@ Note, however, that if you have this plugin enabled, then it *can* enable plugin
 
 Finally, note that while this plugin takes care of the grunt work of reloading your plugin, please keep in mind that it's your *plugin's* job to properly clean up after itself.  If you're not making good use of `onunload()` and the various `registerX()` methods to ensure all your changes unload properly, then you may leave Obsidian in an unstable state, forcing you to restart or reload to restore the app to a working state.
 
-### Installation
+## Installation
 
 This is an Obsidian plugin like any other, and must be cloned or unzipped into your vault's `.obsidian/plugins/` directory, then enabled in the Obsidian configuration.  It's not registered as a standard community plugin for downloading or updating within Obsidian, because it's intended for developer use only, and because it can enable other plugins.

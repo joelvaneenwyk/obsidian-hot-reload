@@ -9,7 +9,7 @@
     "inlineSourceMap": true,
     "inlineSources": true,
     "esModuleInterop": true,
-    "allowJs": true,
+    "skipLibCheck": true,
     "lib": [
       "es2015",
       "es2016",
@@ -27,9 +27,11 @@
     ]
   },
   "include": [
-    "src/**/*.ts",
+    "**/*.ts",
+    "**/*.d.ts",
   ],
   "exclude": [
+    "node_modules",
     "**/*.js"
   ]
 }

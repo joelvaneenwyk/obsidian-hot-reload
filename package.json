@@ -2,15 +2,19 @@
   "name": "mycoshiro-hot-reload",
   "version": "0.2.3",
   "description": "Plugin for hot-reloading plugins if/when they change.",
-  "main": "main.js",
+  "main": "dist/main.js",
   "scripts": {
     "dev": "node esbuild.config.mjs",
     "build": "node esbuild.config.mjs production",
     "deploy": "cross-env-shell \"yarn shx --verbose mkdir -p \"${PROJECT_CWD}/.obsidian/plugins/${npm_package_name}\" && yarn shx --verbose cp -u dist/main.js manifest.json \"${PROJECT_CWD}/.obsidian/plugins/${npm_package_name}\" \"",
-    "lint": "eslint \"**/*.ts\" \"**/*.mjs\"",
+    "lint": "tsc && eslint \"**/*.ts\" \"**/*.mjs\"",
     "lint:fix": "eslint \"**/*.ts\" \"**/*.mjs\" --fix",
     "release": "yarn build && yarn deploy"
   },
+  "files": [
+    "dist/main.js",
+    "manifest.json"
+  ],
   "keywords": [
     "calendar",
     "obsidian"
